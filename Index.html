@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ledger — Grade Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-mark">✓</span>
+      <div>
+        <h1>Ledger</h1>
+        <p class="tagline">a grade book that shows its work</p>
+      </div>
+    </div>
+    <div class="gpa-stamp" id="gpaStamp">
+      <span class="stamp-label">GPA</span>
+      <span class="stamp-value" id="gpaValue">—</span>
+      <span class="stamp-scale" id="gpaScaleLabel">4.0 scale</span>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+
+  <section class="panel settings-panel">
+    <div class="panel-head">
+      <h2>01 · Scale</h2>
+      <p>Pick how grades get scored across your classes.</p>
+    </div>
+    <div class="settings-row">
+      <label>
+        Grading scale
+        <select id="scaleSelect">
+          <option value="4.0">4.0 GPA</option>
+          <option value="5.0">5.0 GPA (weighted for Honors/AP)</option>
+          <option value="percent">Percentage only</option>
+        </select>
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" id="showLetters" checked />
+        Show letter grades
+      </label>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>02 · Classes</h2>
+      <p>Add a class, set its categories and weights, then log assignments.</p>
+    </div>
+
+    <button class="btn btn-primary" id="addClassBtn">+ Add a class</button>
+
+    <div id="classList" class="class-list"></div>
+  </section>
+
+</main>
+
+<template id="classCardTemplate">
+  <article class="class-card">
+    <div class="class-card-top">
+      <div class="stamp-corner" title="current grade"></div>
+      <div class="class-title-row">
+        <input class="class-name-input" placeholder="Class name (e.g. AP Chemistry)" />
+        <label class="honors-toggle">
+          <input type="checkbox" class="honors-check" />
+          AP / Honors
+        </label>
+        <button class="icon-btn delete-class-btn" title="Delete class">✕</button>
+      </div>
+      <div class="class-grade-row">
+        <div class="grade-big">
+          <span class="grade-letter">—</span>
+          <span class="grade-percent">—</span>
+        </div>
+        <button class="btn btn-ghost whatif-toggle-btn">What-if calculator</button>
+      </div>
+    </div>
+
+    <div class="categories-section">
+      <div class="section-label-row">
+        <span class="section-label">Categories &amp; weights</span>
+        <button class="btn btn-small add-category-btn">+ category</button>
+      </div>
+      <div class="category-list"></div>
+      <p class="weight-warning" hidden>Weights don't add up to 100% — grade will be scaled proportionally.</p>
+    </div>
+
+    <div class="whatif-panel" hidden>
+      <div class="section-label-row">
+        <span class="section-label">What-if</span>
+      </div>
+      <p class="whatif-help">Add a hypothetical assignment to see how it would change this class's grade. It won't be saved.</p>
+      <div class="whatif-controls">
+        <select class="whatif-category"></select>
+        <input type="number" class="whatif-score" placeholder="Score" />
+        <span class="whatif-slash">/</span>
+        <input type="number" class="whatif-max" placeholder="Max" value="100" />
+        <button class="btn btn-small whatif-run-btn">See result</button>
+      </div>
+      <p class="whatif-result"></p>
+    </div>
+  </article>
+</template>
+
+<template id="categoryTemplate">
+  <div class="category-row">
+    <input class="category-name-input" placeholder="Category (e.g. Tests)" />
+    <input type="number" class="category-weight-input" placeholder="Weight %" min="0" max="100" />
+    <button class="icon-btn delete-category-btn" title="Delete category">✕</button>
+    <button class="btn btn-small add-assignment-btn">+ assignment</button>
+    <div class="assignment-list"></div>
+  </div>
+</template>
+
+<template id="assignmentTemplate">
+  <div class="assignment-row">
+    <input class="assignment-name-input" placeholder="Assignment name" />
+    <input type="number" class="assignment-score-input" placeholder="Score" />
+    <span class="slash">/</span>
+    <input type="number" class="assignment-max-input" placeholder="Max" value="100" />
+    <button class="icon-btn delete-assignment-btn" title="Remove">✕</button>
+  </div>
+</template>
+
+<footer class="site-footer">
+  <p>Grades are stored only in this browser (localStorage) — nothing is sent anywhere.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
